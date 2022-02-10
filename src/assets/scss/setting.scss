@@ -1,0 +1,284 @@
+/* basic setting */
+
+$body-bg: #ffffff;
+// 淺灰色主文字：label
+$body-color: #808080;
+$white: #fff;
+// 主要標題黑色
+$title-black: #2a2a2a;
+// stepper灰色
+$neutral-gray: #afb1bd;
+// 購物車icon灰色
+$light-gray: #f0f0f5;
+$border-gray: #4a4a4a;
+$black: #000000;
+$pink: #f67599;
+
+$body-font: "Noto Sans TC";
+
+$sizes: (
+  25: 25%,
+  50: 50%,
+  75: 75%,
+  100: 100%
+);
+
+/* 使用@each 產出css size設定 */
+@each $property, $abbreviation in (width: w, height: h) {
+  /*   sizes 的結構也是(a:b, c:d...)，因此可以直接在其中找到對應的值 */
+  @each $number, $value in $sizes {
+    .#{$abbreviation}-#{$number} {
+      #{$property}: $value;
+    }
+  }
+}
+
+$spacer: 1rem;
+$spacers: (
+  0: 0,
+  1: (
+    $spacer * 0.25
+  ),
+  2: (
+    $spacer * 0.5
+  ),
+  3: (
+    $spacer * 0.75
+  ),
+  4: $spacer,
+  5: (
+    $spacer * 1.25
+  ),
+  6: (
+    $spacer * 1.5
+  ),
+  7: (
+    $spacer * 1.75
+  ),
+  8: (
+    $spacer * 2
+  )
+);
+
+/* 使用@each 產出css spacer設定 */
+@each $prop, $abbrev in (margin: m, padding: p) {
+  @each $num, $val in $spacers {
+    .#{$abbrev}-#{$num} {
+      #{$prop}: $val;
+    }
+    .#{$abbrev}t-#{$num} {
+      #{$prop}-top: $val;
+    }
+    .#{$abbrev}r-#{$num} {
+      #{$prop}-right: $val;
+    }
+    .#{$abbrev}b-#{$num} {
+      #{$prop}-bottom: $val;
+    }
+    .#{$abbrev}l-#{$num} {
+      #{$prop}-left: $val;
+    }
+    .#{$abbrev}x-#{$num} {
+      #{$prop}-right: $val;
+      #{$prop}-left: $val;
+    }
+    .#{$abbrev}y-#{$num} {
+      #{$prop}-top: $val;
+      #{$prop}-bottom: $val;
+    }
+  }
+}
+
+// grid & RWD
+// 參考自：https://awdr74100.github.io/2020-06-24-scss-gridsystem-spacing/
+$gutter-width: 30px;
+$grid-sum: 12;
+$grid-breakpoints: (
+  "": false,
+  xs: 375px
+);
+
+.container-fluid {
+  width: 100%;
+  // 因為 row 當中左右兩邊的負值margin，有可能會溢出，因此似乎需要padding做調整(會變成每個在container中，有grid、沒有grid的元素都能有相同的左右間距排版
+  // padding-left: $gutter-width / 2;
+  // padding-right: $gutter-width / 2;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  // 原本是用於抵銷掉左右兩側的gap，但容易造成溢出，在此直接使用gap作為整體的15px內縮效果
+  // margin-left: -($gutter-width / 2);
+  // margin-right: -($gutter-width / 2);
+}
+
+%col {
+  // position: relative;
+  width: 100%;
+  // 製造 grid-gap
+  padding-left: $gutter-width / 2;
+  padding-right: $gutter-width / 2;
+}
+
+// 處理各個RWD中，每種col都共用的樣式(內容不需要用到var變數)
+@each $key, $value in $grid-breakpoints {
+  @for $var from 1 through $grid-sum {
+    @if not $value {
+      .col-#{$var} {
+        @extend %col;
+      }
+    } @else {
+      .col-#{$key}-#{$var} {
+        @extend %col;
+      }
+    }
+  }
+}
+
+// 處理各個col，占比不同的部分
+@each $key, $value in $grid-breakpoints {
+  // col-var 最小手機版，小於375px的情形
+  @if not $value {
+    @for $var from 1 to $grid-sum {
+      .col-#{$var} {
+        max-width: 100% * ($var / $grid-sum);
+        flex: 0 0 (100% * ($var / $grid-sum));
+      }
+    }
+    // 大於375px的版面
+  } @else {
+    @media screen and (min-width: $value) {
+      @for $var from 1 to $grid-sum {
+        .col-#{$key}-#{$var} {
+          max-width: 100% * ($var / $grid-sum);
+          flex: 0 0 (100% * ($var / $grid-sum));
+        }
+      }
+    }
+  }
+}
+
+/* mixin for stepper number generating */
+@mixin getStepNums($num) {
+  @for $i from 1 through $num {
+    &:nth-child(#{$i}) .circle-container::after {
+      // 因為span也會被算進來，因此需要經過數學轉換顯示數字
+      $var: ($i + 1) * 0.5;
+      content: "#{$var}";
+    }
+  }
+}
+
+%standard-boxshadow {
+  box-shadow: 3px 0 13px 0 rgba(100, 112, 134, 0.1);
+}
+
+%input-style {
+  -webkit-appearance: none;
+  height: 40px;
+  border: 1px solid $border-gray;
+  border-radius: 4px;
+}
+
+%price-style {
+  margin-top: $spacer;
+  padding-top: $spacer;
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid $light-gray;
+  .price {
+    font-weight: 700;
+  }
+}
+
+/* basic class */
+.d-none {
+  display: none;
+}
+
+.d-inline {
+  display: inline;
+}
+
+.d-inline-block {
+  display: inline-blockt;
+}
+
+.d-block {
+  display: block;
+}
+
+.d-flex {
+  display: flex;
+}
+
+/* flex class setting */
+.flex-column {
+  flex-direction: column;
+}
+
+.justify-content-start {
+  justify-content: flex-start;
+}
+
+.justify-content-end {
+  justify-content: flex-end;
+}
+
+.justify-content-center {
+  justify-content: center;
+}
+
+.justify-content-between {
+  justify-content: space-between;
+}
+
+.justify-content-around {
+  justify-content: space-around;
+}
+
+.align-content-start {
+  align-content: flex-start;
+}
+
+.align-content-end {
+  align-content: flex-end;
+}
+
+.align-content-center {
+  align-content: center;
+}
+
+.align-items-start {
+  align-items: flex-start;
+}
+
+.align-items-end {
+  align-items: flex-end;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+/* text and cursor class setting */
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.font-weight-700 {
+  font-weight: 700;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
