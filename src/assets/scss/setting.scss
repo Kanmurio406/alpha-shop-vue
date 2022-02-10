@@ -162,10 +162,15 @@ $grid-breakpoints: (
 /* mixin for stepper number generating */
 @mixin getStepNums($num) {
   @for $i from 1 through $num {
-    &:nth-child(#{$i}) .circle-container::after {
-      // 因為span也會被算進來，因此需要經過數學轉換顯示數字
-      $var: ($i + 1) * 0.5;
-      content: "#{$var}";
+    // add flex-grow in first two steps, so div will get all the spaces for connect-line
+    &:nth-child(#{$i}) {
+      @if $i != $num {
+        flex-grow: 1;
+      }
+    }
+    // number display in circle-container
+    &:nth-child(#{$i}) .step .circle-container::after {
+      content: "#{$i}";
     }
   }
 }
@@ -260,6 +265,15 @@ $grid-breakpoints: (
 
 .align-items-center {
   align-items: center;
+}
+
+// flex grow, shrink
+.flex-grow {
+  flex-grow: 1;
+}
+
+.flex-shrink {
+  flex-shrink: 1;
 }
 
 /* text and cursor class setting */

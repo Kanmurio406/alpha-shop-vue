@@ -13,7 +13,7 @@
             justify-content-between
           "
         >
-          <Stepper />
+          <Stepper :steps="steps" />
           <Form />
           <FormBtns />
         </div>
@@ -37,12 +37,47 @@ import Form from "../components/Form.vue";
 import FormBtns from "../components/FormBtns.vue";
 import ShoppingCart from "../components/ShoppingCart.vue";
 
+const dummySteps = [
+  {
+    id: 1,
+    name: "寄送地址",
+    active: true,
+    checked: false,
+  },
+  {
+    id: 2,
+    name: "運送方式",
+    active: false,
+    checked: false,
+  },
+  {
+    id: 3,
+    name: "付款資料",
+    active: false,
+    checked: false,
+  },
+];
+
 export default {
+  name: "AlphaShop",
   components: {
     Stepper,
     Form,
     FormBtns,
     ShoppingCart,
+  },
+  data() {
+    return {
+      steps: [],
+    };
+  },
+  created() {
+    this.fetchData();
+  },
+  methods: {
+    fetchData() {
+      this.steps = dummySteps;
+    },
   },
 };
 </script>

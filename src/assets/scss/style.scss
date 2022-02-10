@@ -31,53 +31,57 @@ body {
   justify-content: space-between;
   align-items: center;
 
-  .step {
-    display: flex;
-    align-items: center;
-    @include getStepNums(5);
-    font-size: 1.5vw;
+  > div {
+    @include getStepNums(3);
 
-    .circle-container {
-      width: $spacer * 2;
-      height: $spacer * 2;
-      background: $white;
-      border: 1px solid $neutral-gray;
-      border-radius: 50%;
-      text-align: center;
-      font-size: $spacer;
-    }
+    .step {
+      display: flex;
+      align-items: center;
+      font-size: 1.5vw;
 
-    .label-container {
-      display: none;
-      margin-left: 0.5vw;
-    }
-
-    &.active {
       .circle-container {
-        background-color: $black;
-        border-color: $black;
-        color: $white;
+        width: $spacer * 2;
+        height: $spacer * 2;
+        background: $white;
+        border: 1px solid $neutral-gray;
+        border-radius: 50%;
+        text-align: center;
+        font-size: $spacer;
       }
-    }
 
-    &.checked {
-      .circle-container {
-        background-color: $black;
-        border-color: $black;
-        color: $white;
-        &::after {
-          content: "\2713";
+      .label-container {
+        display: none;
+        margin-left: 0.5vw;
+      }
+
+      &.active {
+        .circle-container {
+          background-color: $black;
+          border-color: $black;
+          color: $white;
+        }
+      }
+
+      &.checked {
+        .circle-container {
+          background-color: $black;
+          border-color: $black;
+          color: $white;
+          &::after {
+            content: "\2713";
+          }
         }
       }
     }
-  }
 
-  .connect-line {
-    display: block;
-    height: 1px;
-    background-color: $black;
-    flex: 1;
-    margin: 0 8vw;
+    .connect-line {
+      display: block;
+      height: 1px;
+      width: 3vw;
+      background-color: $black;
+      flex: 1;
+      margin: 0 8vw;
+    }
   }
 }
 
@@ -290,23 +294,25 @@ form {
   }
 
   .stepper-container {
-    .step {
-      .circle-container {
-        width: 2vw;
-        height: 2vw;
-        min-width: 16px;
-        min-height: 16px;
-        font-size: 1vw;
-        line-height: 0.8;
+    > div {
+      .step {
+        .circle-container {
+          width: 2vw;
+          height: 2vw;
+          min-width: 16px;
+          min-height: 16px;
+          font-size: 1vw;
+          line-height: 0.8;
+        }
+
+        .label-container {
+          display: block;
+        }
       }
 
-      .label-container {
-        display: block;
+      .connect-line {
+        margin: 0 2vw;
       }
-    }
-
-    .connect-line {
-      margin: 0 2vw;
     }
   }
 
