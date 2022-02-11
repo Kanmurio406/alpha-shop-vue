@@ -26,8 +26,7 @@
             :products="products"
             :transport-price="transportPrice"
             :total-price="totalPrice"
-            @add-number="handleProductNumber"
-            @minus-number="handleProductNumber"
+            @emit-new-number="handleProductNumber"
           />
         </div>
       </div>
