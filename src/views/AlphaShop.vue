@@ -17,8 +17,7 @@
           <Form
             :steps="steps"
             :current-step-id="currentStepId"
-            @click-pre-button="handleFormBtn"
-            @click-next-button="handleFormBtn"
+            @emit-new-step-id="handleFormBtn"
           />
         </div>
         <div class="right-content mt-6 col-12 col-xs-5">

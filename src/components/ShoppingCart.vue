@@ -54,27 +54,27 @@ export default {
   },
   methods: {
     addNumber(id) {
-      let product = this.products.filter((product) => product.id === id)[0];
-      let newNumber = product.number + 1;
+      const product = this.products.filter((product) => product.id === id)[0];
+      const newNumber = product.number + 1;
       if (newNumber >= 6) {
         alert("超過商品可購買數量！");
         return;
       }
-      this.emitNewNumber(product.id, newNumber)
+      this.emitNewNumber(product.id, newNumber);
     },
     minusNumber(id) {
-      let product = this.products.filter((product) => product.id === id)[0];
-      let newNumber = product.number - 1;
+      const product = this.products.filter((product) => product.id === id)[0];
+      const newNumber = product.number - 1;
       if (newNumber <= 0) {
         alert("少於商品購買最小數量！");
         return;
       }
-      this.emitNewNumber(product.id, newNumber)
+      this.emitNewNumber(product.id, newNumber);
     },
     emitNewNumber(id, newNumber) {
       this.$emit("emit-new-number", {
-        id: id,
-        newNumber: newNumber,
+        id,
+        newNumber,
       });
     },
   },

@@ -125,6 +125,7 @@
             <!--       使用row-reverse順序相反       -->
             <button
               type="submit"
+              @click.stop.prevent="handleSubmit"
               v-if="currentStepId === steps.length"
               class="btn-next-step"
             >
@@ -166,16 +167,21 @@ export default {
   },
   methods: {
     handlePreBtn() {
-      this.$emit("click-pre-button", {
-        newStepId: this.currentStepId - 1,
-      });
+      const newStepId = this.currentStepId - 1;
+      this.emitNewStep(newStepId);
     },
     handleNextBtn() {
-      this.$emit("click-next-button", {
-        newStepId: this.currentStepId + 1,
+      const newStepId = this.currentStepId + 1;
+      this.emitNewStep(newStepId);
+    },
+    emitNewStep(newStepId) {
+      this.$emit("emit-new-step-id", {
+        newStepId,
       });
     },
-    handleSubmitBtn() {},
+    handleSubmit() {
+      console.log("submit form");
+    },
   },
 };
 </script>
