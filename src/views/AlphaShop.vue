@@ -13,9 +13,14 @@
             justify-content-between
           "
         >
-          <Stepper :steps="steps" />
+          <Stepper :steps="steps" :current-step-id="currentStepId" />
           <Form />
-          <FormBtns />
+          <FormBtns
+            :steps="steps"
+            :current-step-id="currentStepId"
+            @click-pre-button="clickPreBtn"
+            @click-next-button="clickNextBtn"
+          />
         </div>
         <div class="right-content mt-6 col-12 col-xs-5">
           <ShoppingCart />
@@ -41,20 +46,14 @@ const dummySteps = [
   {
     id: 1,
     name: "寄送地址",
-    active: true,
-    checked: false,
   },
   {
     id: 2,
     name: "運送方式",
-    active: false,
-    checked: false,
   },
   {
     id: 3,
     name: "付款資料",
-    active: false,
-    checked: false,
   },
 ];
 
@@ -68,6 +67,7 @@ export default {
   },
   data() {
     return {
+      currentStepId: 1,
       steps: [],
     };
   },
@@ -77,6 +77,14 @@ export default {
   methods: {
     fetchData() {
       this.steps = dummySteps;
+    },
+    clickPreBtn(payload) {
+      const { newStepId } = payload;
+      this.currentStepId = newStepId;
+    },
+    clickNextBtn(payload) {
+      const { newStepId } = payload;
+      this.currentStepId = newStepId;
     },
   },
 };

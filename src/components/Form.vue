@@ -123,6 +123,6 @@
 
 <script>
 export default {
-  name: 'Form',
-}
+  name: "Form",
+};
 </script>

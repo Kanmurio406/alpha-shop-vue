@@ -8,7 +8,10 @@
       >
         <div
           class="step"
-          :class="{ active: step.active, checked: step.checked }"
+          :class="{
+            active: step.id === currentStepId,
+            checked: step.id < currentStepId,
+          }"
         >
           <div class="circle-container"></div>
           <div class="label-container">{{ step.name }}</div>
@@ -23,6 +26,10 @@
 export default {
   name: "Stepper",
   props: {
+    currentStepId: {
+      type: Number,
+      required: true,
+    },
     steps: {
       type: Array,
       required: true,
