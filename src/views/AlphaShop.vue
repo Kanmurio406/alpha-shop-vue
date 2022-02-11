@@ -14,16 +14,21 @@
           "
         >
           <Stepper :steps="steps" :current-step-id="currentStepId" />
-          <Form />
-          <FormBtns
+          <Form
             :steps="steps"
             :current-step-id="currentStepId"
-            @click-pre-button="clickPreBtn"
-            @click-next-button="clickNextBtn"
+            @click-pre-button="handleFormBtn"
+            @click-next-button="handleFormBtn"
           />
         </div>
         <div class="right-content mt-6 col-12 col-xs-5">
-          <ShoppingCart />
+          <ShoppingCart
+            :products="products"
+            :transport-price="transportPrice"
+            :total-price="totalPrice"
+            @add-number="handleProductNumber"
+            @minus-number="handleProductNumber"
+          />
         </div>
       </div>
     </div>
@@ -39,7 +44,6 @@
 <script>
 import Stepper from "../components/Stepper.vue";
 import Form from "../components/Form.vue";
-import FormBtns from "../components/FormBtns.vue";
 import ShoppingCart from "../components/ShoppingCart.vue";
 
 const dummySteps = [
@@ -57,18 +61,36 @@ const dummySteps = [
   },
 ];
 
+const dummyProducts = [
+  {
+    id: 1,
+    img: "https://i.imgur.com/AKz0WnJ.png",
+    name: "破壞補丁修身牛仔褲",
+    number: 1,
+    price: 3999,
+  },
+  {
+    id: 2,
+    img: "https://imgur.com/HDJ26UH.png",
+    name: "刷色直筒牛仔褲",
+    number: 1,
+    price: 1299,
+  },
+];
+
 export default {
   name: "AlphaShop",
   components: {
     Stepper,
     Form,
-    FormBtns,
     ShoppingCart,
   },
   data() {
     return {
       currentStepId: 1,
       steps: [],
+      products: [],
+      transportPrice: 0,
     };
   },
   created() {
@@ -77,14 +99,27 @@ export default {
   methods: {
     fetchData() {
       this.steps = dummySteps;
+      this.products = dummyProducts;
     },
-    clickPreBtn(payload) {
+    handleFormBtn(payload) {
       const { newStepId } = payload;
       this.currentStepId = newStepId;
     },
-    clickNextBtn(payload) {
-      const { newStepId } = payload;
-      this.currentStepId = newStepId;
+    handleProductNumber(payload) {
+      const { id, newNumber } = payload;
+      let product = this.products.filter((product) => product.id === id)[0];
+      // filter展開多個物件陣列的情形下，如果物件本身沒被展開，指向的仍是相同儲存位置(淺拷貝)，因此直接更改number即可
+      product.number = newNumber;
+    },
+  },
+  computed: {
+    totalPrice() {
+      let totalPrice = 0;
+      this.products.forEach(function (product) {
+        totalPrice += product.number * product.price;
+      });
+      totalPrice += this.transportPrice;
+      return totalPrice;
     },
   },
 };

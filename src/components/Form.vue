@@ -1,9 +1,13 @@
 <template>
   <div class="form-panel mt-6">
-    <div class="form-container">
-      <form action="" id="a-form">
+    <div class="form-container h-100">
+      <form
+        action=""
+        id="a-form"
+        class="h-100 d-flex flex-column justify-content-between"
+      >
         <div class="form-content">
-          <div class="part">
+          <div class="part" :class="{ 'd-none': currentStepId !== 1 }">
             <h2 class="part-title">寄送地址</h2>
             <div class="row">
               <div class="form-row col-4 col-xs-4 d-flex flex-column">
@@ -53,7 +57,7 @@
               </div>
             </div>
           </div>
-          <div class="part d-none">
+          <div class="part" :class="{ 'd-none': currentStepId !== 2 }">
             <h2 class="part-title">運送方式</h2>
             <div class="form-row">
               <div class="row">
@@ -90,7 +94,7 @@
               </div>
             </div>
           </div>
-          <div class="part d-none">
+          <div class="part" :class="{ 'd-none': currentStepId !== 3 }">
             <h2 class="part-title">付款資訊</h2>
             <div class="row">
               <div class="form-row col-12 col-sx-8 d-flex flex-column">
@@ -116,6 +120,32 @@
             </div>
           </div>
         </div>
+        <div class="btn-panel">
+          <div id="btn-control" class="btn-container">
+            <!--       使用row-reverse順序相反       -->
+            <button
+              type="submit"
+              v-if="currentStepId === steps.length"
+              class="btn-next-step"
+            >
+              確認下單
+            </button>
+            <button
+              v-else
+              @click.stop.prevent="handleNextBtn"
+              class="btn-next-step"
+            >
+              下一步 →
+            </button>
+            <button
+              class="btn-pre-step"
+              @click.stop.prevent="handlePreBtn"
+              :class="{ 'd-none': currentStepId === 1 }"
+            >
+              ← 上一步
+            </button>
+          </div>
+        </div>
       </form>
     </div>
   </div>
@@ -124,5 +154,28 @@
 <script>
 export default {
   name: "Form",
+  props: {
+    currentStepId: {
+      type: Number,
+      required: true,
+    },
+    steps: {
+      type: Array,
+      required: true,
+    },
+  },
+  methods: {
+    handlePreBtn() {
+      this.$emit("click-pre-button", {
+        newStepId: this.currentStepId - 1,
+      });
+    },
+    handleNextBtn() {
+      this.$emit("click-next-button", {
+        newStepId: this.currentStepId + 1,
+      });
+    },
+    handleSubmitBtn() {},
+  },
 };
 </script>
