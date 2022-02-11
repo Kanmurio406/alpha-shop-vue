@@ -17,7 +17,9 @@
           <Form
             :steps="steps"
             :current-step-id="currentStepId"
+            :transport-options="transportOptions"
             @emit-new-step-id="handleFormBtn"
+            @emit-transport-id="handleTransport"
           />
         </div>
         <div class="right-content mt-6 col-12 col-xs-5">
@@ -76,6 +78,27 @@ const dummyProducts = [
   },
 ];
 
+const dummyTransportOptions = [
+  {
+    id: 1,
+    name: "標準運送",
+    label: "free",
+    time: "約3~7個工作天",
+    value: "Standard",
+    price: 0,
+    priceDescription: "免費",
+  },
+  {
+    id: 2,
+    name: "DHL貨運",
+    label: "dhl",
+    time: "48小時內送達",
+    value: "DHL",
+    price: 500,
+    priceDescription: "$500",
+  },
+];
+
 export default {
   name: "AlphaShop",
   components: {
@@ -89,6 +112,7 @@ export default {
       steps: [],
       products: [],
       transportPrice: 0,
+      transportOptions: [],
     };
   },
   created() {
@@ -98,6 +122,7 @@ export default {
     fetchData() {
       this.steps = dummySteps;
       this.products = dummyProducts;
+      this.transportOptions = dummyTransportOptions;
     },
     handleFormBtn(payload) {
       const { newStepId } = payload;
@@ -105,9 +130,16 @@ export default {
     },
     handleProductNumber(payload) {
       const { id, newNumber } = payload;
-      let product = this.products.filter((product) => product.id === id)[0];
+      let product = this.products.find((product) => product.id === id);
       // filter展開多個物件陣列的情形下，如果物件本身沒被展開，指向的仍是相同儲存位置(淺拷貝)，因此直接更改number即可
       product.number = newNumber;
+    },
+    handleTransport(payload) {
+      const { transportId } = payload;
+      const selectedTransportOption = this.transportOptions.find(
+        (option) => option.id === transportId
+      );
+      this.transportPrice = selectedTransportOption.price;
     },
   },
   computed: {

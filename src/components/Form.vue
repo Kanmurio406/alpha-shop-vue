@@ -11,9 +11,9 @@
             <h2 class="part-title">寄送地址</h2>
             <div class="row">
               <div class="form-row col-4 col-xs-4 d-flex flex-column">
-                <label for="">稱謂</label>
+                <label for="title">稱謂</label>
                 <div class="select-wrapper">
-                  <select name="" id="">
+                  <select name="title" id="title">
                     <option value="">請選擇稱謂</option>
                     <option value="">女士</option>
                     <option value="">先生</option>
@@ -22,25 +22,25 @@
                 </div>
               </div>
               <div class="form-row col-8 col-xs-8 d-flex flex-column">
-                <label for="">姓名</label>
-                <input type="text" placeholder="請輸入姓名" />
+                <label for="name">姓名</label>
+                <input type="text" placeholder="請輸入姓名" id="name" />
               </div>
             </div>
             <div class="row">
               <div class="form-row col-12 col-xs-6 d-flex flex-column mb-4">
-                <label for="">電話</label>
-                <input type="text" placeholder="請輸入行動電話" />
+                <label for="tel">電話</label>
+                <input type="text" placeholder="請輸入行動電話" id="tel" />
               </div>
               <div class="form-row col-12 col-xs-6 d-flex flex-column">
-                <label for="">Email</label>
-                <input type="text" placeholder="請輸入電子郵件" />
+                <label for="email">Email</label>
+                <input type="text" placeholder="請輸入電子郵件" id="email" />
               </div>
             </div>
             <div class="row">
               <div class="form-row col-12 col-xs-4 d-flex flex-column mb-4">
-                <label for="">縣市</label>
+                <label for="area">縣市</label>
                 <div class="select-wrapper">
-                  <select name="" id="">
+                  <select name="" id="area">
                     <option value="">請選擇居住縣市</option>
                     <option value="">台北市</option>
                     <option value="">新北市</option>
@@ -52,42 +52,40 @@
                 </div>
               </div>
               <div class="form-row col-12 col-xs-8 d-flex flex-column">
-                <label for="">地址</label>
-                <input type="text" placeholder="請輸入地址" />
+                <label for="address">地址</label>
+                <input type="text" placeholder="請輸入地址" id="address" />
               </div>
             </div>
           </div>
           <div class="part" :class="{ 'd-none': currentStepId !== 2 }">
             <h2 class="part-title">運送方式</h2>
             <div class="form-row">
-              <div class="row">
+              <div
+                v-for="option in transportOptions"
+                :key="option.id"
+                class="row"
+              >
                 <div class="col-12 col-sx-12">
                   <div class="radio-container">
                     <div class="radio-content">
-                      <input name="transport" type="radio" value="standard" />
+                      <input
+                        v-model="transportId"
+                        name="transport"
+                        type="radio"
+                        :value="option.id"
+                        :id="option.label"
+                      />
                       <div class="label-container">
-                        <label for="">標準運送</label>
-                        <label for="">約3~7個工作天</label>
+                        <label
+                          :for="option.label"
+                          :class="{ 'font-weight-700': option.id === 2 }"
+                          >{{ option.name }}</label
+                        >
+                        <label :for="option.label">{{ option.time }}</label>
                       </div>
                     </div>
                     <div class="radio-price">
-                      <p>免費</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-12 col-sx-12">
-                  <div class="radio-container">
-                    <div class="radio-content">
-                      <input name="transport" type="radio" value="DHL" />
-                      <div class="label-container">
-                        <label for="" class="font-weight-700">DHL貨運</label>
-                        <label for="">48小時內送達</label>
-                      </div>
-                    </div>
-                    <div class="radio-price">
-                      <p>$500</p>
+                      <p>{{ option.priceDescription }}</p>
                     </div>
                   </div>
                 </div>
@@ -98,24 +96,28 @@
             <h2 class="part-title">付款資訊</h2>
             <div class="row">
               <div class="form-row col-12 col-sx-8 d-flex flex-column">
-                <label for="">持卡人姓名</label>
-                <input type="text" placeholder="Kuan-Yu" />
+                <label for="owner-name">持卡人姓名</label>
+                <input type="text" placeholder="Kuan-Yu" id="owner-name" />
               </div>
             </div>
             <div class="row">
               <div class="form-row col-12 col-sx-8 d-flex flex-column">
-                <label for="">卡號</label>
-                <input type="text" placeholder="1111 2222 3333 4444" />
+                <label for="card-number">卡號</label>
+                <input
+                  type="text"
+                  placeholder="1111 2222 3333 4444"
+                  id="card-number"
+                />
               </div>
             </div>
             <div class="row">
               <div class="form-row col-6 col-sx-6 d-flex flex-column">
-                <label for="">有效期限</label>
-                <input type="text" placeholder="MM/YY" />
+                <label for="card-date">有效期限</label>
+                <input type="text" placeholder="MM/YY" id="card-date" />
               </div>
               <div class="form-row col-6 col-sx-6 d-flex flex-column">
-                <label for="">CVC/CCV</label>
-                <input type="text" placeholder="123" />
+                <label for="card-check">CVC/CCV</label>
+                <input type="text" placeholder="123" id="card-check" />
               </div>
             </div>
           </div>
@@ -164,6 +166,16 @@ export default {
       type: Array,
       required: true,
     },
+    // 用於render貨運選項
+    transportOptions: {
+      type: Array,
+      required: true,
+    },
+  },
+  data() {
+    return {
+      transportId: 1,
+    };
   },
   methods: {
     handlePreBtn() {
@@ -181,6 +193,14 @@ export default {
     },
     handleSubmit() {
       console.log("submit form");
+    },
+  },
+  watch: {
+    // transportId發生改變時(v-model綁定form選項)，回傳至父層
+    transportId: function emitTransportId() {
+      this.$emit("emit-transport-id", {
+        transportId: Number(this.transportId),
+      });
     },
   },
 };

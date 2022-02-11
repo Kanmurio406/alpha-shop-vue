@@ -25,7 +25,10 @@
       </div>
       <div class="shipping-price-container">
         <p class="shipping-price-title">運費</p>
-        <p class="shipping-price price">免費</p>
+        <p class="shipping-price price">
+          <span v-if="transportPrice === 0">免費</span>
+          <span v-else>{{ transportPrice }}</span>
+        </p>
       </div>
       <div class="total-price-container">
         <p class="total-price-title">小計</p>
@@ -54,7 +57,7 @@ export default {
   },
   methods: {
     addNumber(id) {
-      const product = this.products.filter((product) => product.id === id)[0];
+      const product = this.products.find((product) => product.id === id);
       const newNumber = product.number + 1;
       if (newNumber >= 6) {
         alert("超過商品可購買數量！");
@@ -63,7 +66,7 @@ export default {
       this.emitNewNumber(product.id, newNumber);
     },
     minusNumber(id) {
-      const product = this.products.filter((product) => product.id === id)[0];
+      const product = this.products.find((product) => product.id === id);
       const newNumber = product.number - 1;
       if (newNumber <= 0) {
         alert("少於商品購買最小數量！");
