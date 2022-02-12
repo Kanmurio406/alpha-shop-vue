@@ -178,6 +178,7 @@ export default {
     };
   },
   methods: {
+    // Step control buttons and emit function to Alphashop
     handlePreBtn() {
       const newStepId = this.currentStepId - 1;
       this.emitNewStep(newStepId);
@@ -191,6 +192,7 @@ export default {
         newStepId,
       });
     },
+    //TODO: submit function
     handleSubmit() {
       console.log("submit form");
     },

@@ -46,6 +46,7 @@ export default {
       type: Array,
       required: true,
     },
+    // 即時接收貨運和小計價格做更新
     transportPrice: {
       type: Number,
       required: true,
@@ -56,6 +57,7 @@ export default {
     },
   },
   methods: {
+    // product number buttons and emit function to Alphashop
     addNumber(id) {
       const product = this.products.find((product) => product.id === id);
       const newNumber = product.number + 1;

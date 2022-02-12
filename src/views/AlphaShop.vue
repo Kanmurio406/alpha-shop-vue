@@ -124,16 +124,19 @@ export default {
       this.products = dummyProducts;
       this.transportOptions = dummyTransportOptions;
     },
+    // 監聽Form回傳newStepId
     handleFormBtn(payload) {
       const { newStepId } = payload;
       this.currentStepId = newStepId;
     },
+    // 監聽ShoppingCart回傳新商品數量newNumber
     handleProductNumber(payload) {
       const { id, newNumber } = payload;
       let product = this.products.find((product) => product.id === id);
-      // filter展開多個物件陣列的情形下，如果物件本身沒被展開，指向的仍是相同儲存位置(淺拷貝)，因此直接更改number即可
+      // find找到物件並賦值，指向的仍是相同儲存位置(淺拷貝)，因此直接更改number即可
       product.number = newNumber;
     },
+    // 監聽Form回傳transportId
     handleTransport(payload) {
       const { transportId } = payload;
       const selectedTransportOption = this.transportOptions.find(
@@ -143,6 +146,7 @@ export default {
     },
   },
   computed: {
+    // 即時更新totalPrice
     totalPrice() {
       let totalPrice = 0;
       this.products.forEach(function (product) {
