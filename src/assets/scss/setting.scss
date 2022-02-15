@@ -36,26 +36,26 @@ $sizes: (
 $spacer: 1rem;
 $spacers: (
   0: 0,
-  1: (
+  1: calc(
     $spacer * 0.25
   ),
-  2: (
+  2: calc(
     $spacer * 0.5
   ),
-  3: (
+  3: calc(
     $spacer * 0.75
   ),
   4: $spacer,
-  5: (
+  5: calc(
     $spacer * 1.25
   ),
-  6: (
+  6: calc(
     $spacer * 1.5
   ),
-  7: (
+  7: calc(
     $spacer * 1.75
   ),
-  8: (
+  8: calc(
     $spacer * 2
   )
 );
@@ -101,24 +101,24 @@ $grid-breakpoints: (
 .container-fluid {
   width: 100%;
   // 因為 row 當中左右兩邊的負值margin，有可能會溢出，因此似乎需要padding做調整(會變成每個在container中，有grid、沒有grid的元素都能有相同的左右間距排版
-  // padding-left: $gutter-width / 2;
-  // padding-right: $gutter-width / 2;
+  // padding-left: calc($gutter-width / 2);
+  // padding-right: calc($gutter-width / 2);
 }
 
 .row {
   display: flex;
   flex-wrap: wrap;
   // 原本是用於抵銷掉左右兩側的gap，但容易造成溢出，在此直接使用gap作為整體的15px內縮效果
-  // margin-left: -($gutter-width / 2);
-  // margin-right: -($gutter-width / 2);
+  // margin-left: -calc($gutter-width / 2);
+  // margin-right: -calc($gutter-width / 2);
 }
 
 %col {
   // position: relative;
   width: 100%;
   // 製造 grid-gap
-  padding-left: $gutter-width / 2;
-  padding-right: $gutter-width / 2;
+  padding-left: calc($gutter-width / 2);
+  padding-right: calc($gutter-width / 2);
 }
 
 // 處理各個RWD中，每種col都共用的樣式(內容不需要用到var變數)
@@ -142,8 +142,8 @@ $grid-breakpoints: (
   @if not $value {
     @for $var from 1 to $grid-sum {
       .col-#{$var} {
-        max-width: 100% * ($var / $grid-sum);
-        flex: 0 0 (100% * ($var / $grid-sum));
+        max-width: calc(100% * calc($var / $grid-sum));
+        flex: 0 0 calc(100% * calc($var / $grid-sum));
       }
     }
     // 大於375px的版面
@@ -151,8 +151,8 @@ $grid-breakpoints: (
     @media screen and (min-width: $value) {
       @for $var from 1 to $grid-sum {
         .col-#{$key}-#{$var} {
-          max-width: 100% * ($var / $grid-sum);
-          flex: 0 0 (100% * ($var / $grid-sum));
+          max-width: calc(100% * calc($var / $grid-sum));
+          flex: 0 0 calc(100% * calc($var / $grid-sum));
         }
       }
     }

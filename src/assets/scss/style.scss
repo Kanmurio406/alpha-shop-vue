@@ -40,8 +40,8 @@ body {
       font-size: 1.5vw;
 
       .circle-container {
-        width: $spacer * 2;
-        height: $spacer * 2;
+        width: calc($spacer * 2);
+        height: calc($spacer * 2);
         background: $white;
         border: 1px solid $neutral-gray;
         border-radius: 50%;
@@ -87,16 +87,16 @@ body {
 
 form {
   .part-title {
-    margin-bottom: $spacer * 1.5;
+    margin-bottom: calc($spacer * 1.5);
     color: $title-black;
   }
   // 跨row的元素，垂直間距24px，同row的元素間距設定在HTML
   // 拿掉最後一個child的margin，因為在區塊內是緊貼的，間距留在大區塊之間
   .row {
     //消除form中grid左右兩側的gap，和其他區塊才能對齊
-    margin-left: -($gutter-width / 2);
-    margin-right: -($gutter-width / 2);
-    margin-bottom: $spacer * 1.5;
+    margin-left: -(calc($gutter-width / 2));
+    margin-right: -(calc($gutter-width / 2));
+    margin-bottom: calc($spacer * 1.5);
     &:last-child {
       margin-bottom: 0px;
     }
@@ -104,7 +104,7 @@ form {
 
   .form-row {
     > label {
-      margin-bottom: $spacer * 0.5;
+      margin-bottom: calc($spacer * 0.5);
     }
 
     input {
@@ -226,7 +226,7 @@ form {
     display: flex;
     justify-content: space-between;
     padding-top: 20px;
-    font-size: $spacer * 0.8;
+    font-size: calc($spacer * 0.8);
 
     img {
       width: 30%;
@@ -247,7 +247,7 @@ form {
         align-items: end;
 
         .product-name {
-          font-size: $spacer * 0.8;
+          font-size: calc($spacer * 0.8);
         }
 
         .product-number-container {
@@ -304,9 +304,9 @@ form {
           font-size: 1vw;
         }
 
-        .label-container {
-          display: block;
-        }
+        // .label-container {
+        //   display: block;
+        // }
       }
 
       .connect-line {
@@ -360,6 +360,18 @@ form {
           .product-number-container {
             padding-top: $spacer;
           }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 650px) {
+    .stepper-container {
+    > div {
+      .step {
+        .label-container {
+          display: block;
         }
       }
     }
